@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopSphere - E-Commerce Portal</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        /* Base class for all pages, hidden by default */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        /* Class for the currently active page */
+        .page.active {
+            display: block;
+        }
+        /* Simple fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* Helper for form error messages */
+        .error-msg {
+            color: #ef4444; /* red-500 */
+            font-size: 0.875rem; /* text-sm */
+            margin-top: 0.25rem; /* mt-1 */
+            display: none; /* Hidden by default */
+        }
+        .error-msg.show {
+            display: block;
+        }
+        /* Star rating SVGs */
+        .star-filled {
+            width: 1.25rem; height: 1.25rem; color: #f59e0b; /* yellow-500 */
+        }
+        .star-empty {
+            width: 1.25rem; height: 1.25rem; color: #d1d5db; /* gray-300 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- =========== HEADER & NAVIGATION =========== -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <!-- Top Bar: Brand, Search, User Actions -->
+        <div class="bg-gray-800 text-white p-4">
+            <div class="container mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-4">
+                <!-- Brand -->
+                <a href="#" class="text-2xl font-bold text-white" data-page="page-home">ShopSphere</a>
+                
+                <!-- Search Bar -->
+                <div class="flex-grow max-w-xl flex">
+                    <input type="text" placeholder="Search for products, brands, and more" class="w-full px-4 py-2 rounded-l-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button class="bg-blue-600 px-4 py-2 rounded-r-md hover:bg-blue-700">
+                        <!-- Search Icon SVG -->
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+
+                <!-- User Actions -->
+                <div class="flex items-center gap-4">
+                    <a href="#" class="px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-700" data-page="page-login">Login</a>
+                    <a href="#" class="px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-700" data-page="page-register">Register</a>
+                    <a href="#" class="flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-700" data-page="page-wishlist">
+                        <!-- Heart Icon SVG -->
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z"></path></svg>
+                        Wishlist
+                    </a>
+                    <a href="#" class="flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-700" data-page="page-orders">
+                        <!-- Package Icon SVG -->
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" /></svg>
+                        Orders
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Bar: Main Navigation -->
+        <nav class="bg-white shadow-sm">
+            <div class="container mx-auto max-w-7xl flex justify-center items-center gap-8 py-3">
+                <a href="#" class="font-medium text-gray-700 hover:text-blue-600" data-page="page-home">Home</a>
+                <a href="#" class="font-medium text-gray-700 hover:text-blue-600" data-page="page-products">Product Items</a>
+                <a href="#" class="font-medium text-gray-700 hover:text-blue-600" data-page="page-about">About Us</a>
+                <a href="#" class="font-medium text-gray-700 hover:text-blue-600" data-page="page-contact">Contact Us</a>
+                <a href="#" class="font-medium text-gray-700 hover:text-blue-600" data-page="page-care">Customer Care</a>
+                <a href="#" class="font-medium text-gray-700 hover:text-blue-600" data-page="page-reviews">My Reviews</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- =========== MAIN CONTENT AREA =========== -->
+    <main class="container mx-auto max-w-7xl p-4 md:p-6">
+
+        <!-- =========== PAGE: HOME =========== -->
+        <div id="page-home" class="page active">
+            <!-- Hero Banner -->
+            <div class="bg-blue-600 text-white rounded-lg p-8 md:p-12 mb-8 flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl md:text-5xl font-bold mb-3">Great Deals, Delivered to You</h1>
+                    <p class="text-lg md:text-xl text-blue-100 mb-6">Find everything you need, from electronics to fashion.</p>
+                    <a href="#" class="bg-white text-blue-600 font-bold py-3 px-6 rounded-md hover:bg-gray-100" data-page="page-products">Shop Now</a>
+                </div>
+                <img src="https://placehold.co/400x300/ffffff/3B82F6?text=Big+Sale!" alt="Sale" class="hidden lg:block w-1/3 rounded-lg object-cover">
+            </div>
+
+            <!-- Product Grid -->
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Today's Deals</h2>
+            <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                <!-- Product cards will be injected here by JavaScript -->
+            </div>
+        </div>
+
+        <!-- =========== PAGE: PRODUCT ITEMS =========== -->
+        <div id="page-products" class="page">
+            <h1 class="text-3xl font-bold text-gray-900 mb-6">All Products</h1>
+            <!-- This could be a more detailed list, but for demo, we'll reuse the main product grid -->
+            <div id="product-grid-page" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                <!-- Product cards will be injected here by JavaScript -->
+            </div>
+        </div>
+
+        <!-- =========== PAGE: ABOUT US =========== -->
+        <div id="page-about" class="page">
+            <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                <h1 class="text-3xl font-bold text-gray-900 mb-6">About ShopSphere</h1>
+                <p class="text-gray-700 text-lg mb-4">
+                    Welcome to ShopSphere, your one-stop shop for everything you need. Founded in 2025, our mission is to provide the best products at the best prices, with unparalleled customer service. We believe in making shopping easy, fast, and enjoyable for everyone.
+                </p>
+                <p class="text-gray-700 text-lg mb-4">
+                    Our platform connects millions of buyers and sellers worldwide, offering a vast selection of items across hundreds of categories. From the latest tech gadgets to handmade artisan crafts, if it exists, you can probably find it on ShopSphere.
+                </p>
+                <img src="https://placehold.co/800x300/eee/333?text=Our+Team+Warehouse" alt="Our Warehouse" class="w-full h-64 object-cover rounded-md mt-6">
+            </div>
+        </div>
+
+        <!-- =========== PAGE: CONTACT US =========== -->
+        <div id="page-contact" class="page">
+            <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+                <!-- Contact Info -->
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-6">Get in Touch</h1>
+                    <p class="text-gray-700 text-lg mb-4">
+                        Have a question or a comment? We'd love to hear from you.
+                    </p>
+                    <div class="space-y-4">
+                        <p class="flex items-center gap-3"><svg class="w-6 h-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+                        123 Commerce St, Web City, 10101</p>
+                        <p class="flex items-center gap-3"><svg class="w-6 h-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.892-1.44-5.287-3.835-6.727-6.727l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
+                        (555) 123-4567</p>
+                        <p class="flex items-center gap-3"><svg class="w-6 h-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+                        support@shopsphere.com</p>
+                    </div>
+                </div>
+                <!-- Contact Form -->
+                <form class="space-y-4">
+                    <div>
+                        <label for="contact-name" class="block text-sm font-medium text-gray-700">Your Name</label>
+                        <input type="text" id="contact-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="contact-email" class="block text-sm font-medium text-gray-700">Your Email</label>
+                        <input type="email" id="contact-email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="contact-message" class="block text-sm font-medium text-gray-700">Message</label>
+                        <textarea id="contact-message" rows="5" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md font-medium hover:bg-blue-700">Send Message</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- =========== PAGE: LOGIN =========== -->
+        <div id="page-login" class="page">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-xl mt-10">
+                <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">Login to your Account</h2>
+                <form id="login-form" class="space-y-4" novalidate>
+                    <div>
+                        <label for="login-email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input type="email" id="login-email" name="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <p id="login-email-error" class="error-msg">Please enter a valid email.</p>
+                    </div>
+                    <div>
+                        <label for="login-password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="login-password" name="password" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <p id="login-password-error" class="error-msg">Password is required.</p>
+                    </div>
+                    <div class="text-sm">
+                        <a href="#" class="font-medium text-blue-600 hover:text-blue-500">Forgot your password?</a>
+                    </div>
+                    <!-- Success Message -->
+                    <div id="login-success" class="p-4 text-green-700 bg-green-100 rounded-md" style="display: none;">
+                        Login successful! Redirecting...
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Sign In
+                    </button>
+                </form>
+                <p class="mt-6 text-center text-sm text-gray-600">
+                    Not a member?
+                    <a href="#" class="font-medium text-blue-600 hover:text-blue-500" data-page="page-register">
+                        Register now
+                    </a>
+                </p>
+            </div>
+        </div>
+        
+        <!-- =========== PAGE: REGISTER =========== -->
+        <div id="page-register" class="page">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-xl mt-10">
+                <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">Create an Account</h2>
+                <form id="register-form" class="space-y-4" novalidate>
+                    <div>
+                        <label for="reg-name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" id="reg-name" name="name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <p id="reg-name-error" class="error-msg">Full name is required.</p>
+                    </div>
+                    <div>
+                        <label for="reg-email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input type="email" id="reg-email" name="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <p id="reg-email-error" class="error-msg">Please enter a valid email.</p>
+                    </div>
+                    <div>
+                        <label for="reg-password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="reg-password" name="password" required minlength="8" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <p id="reg-password-error" class="error-msg">Password must be at least 8 characters long.</p>
+                    </div>
+                    <div>
+                        <label for="reg-confirm-password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                        <input type="password" id="reg-confirm-password" name="confirm-password" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <p id="reg-confirm-password-error" class="error-msg">Passwords do not match.</p>
+                    </div>
+                    <!-- Success Message -->
+                    <div id="register-success" class="p-4 text-green-700 bg-green-100 rounded-md" style="display: none;">
+                        Registration successful! Please log in.
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Create Account
+                    </button>
+                </form>
+                <p class="mt-6 text-center text-sm text-gray-600">
+                    Already have an account?
+                    <a href="#" class="font-medium text-blue-600 hover:text-blue-500" data-page="page-login">
+                        Sign in
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        <!-- =========== PAGE: ORDERS LIST =========== -->
+        <div id="page-orders" class="page">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-3xl font-bold text-gray-900 mb-6">Your Orders</h1>
+                <div id="order-list" class="space-y-6">
+                    <!-- Order items will be injected here by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- =========== PAGE: WISHLIST =========== -->
+        <div id="page-wishlist" class="page">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-3xl font-bold text-gray-900 mb-6">Your Wishlist</h1>
+                <div id="wishlist-list" class="space-y-6">
+                    <!-- Wishlist items will be injected here by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- =========== PAGE: COMMENTS & REVIEWS =========== -->
+        <div id="page-reviews" class="page">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-3xl font-bold text-gray-900 mb-6">Your Comments & Reviews</h1>
+                <div id="review-list" class="space-y-6">
+                    <!-- Review items will be injected here by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- =========== PAGE: CUSTOMER CARE & REPORTING =========== -->
+        <div id="page-care" class="page">
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
+                <h1 class="text-3xl font-bold text-gray-900 mb-6">Customer Care & Reporting</h1>
+                
+                <!-- Section: Report an Issue -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Report an Issue</h2>
+                    <form class="space-y-4 p-6 border border-gray-200 rounded-lg">
+                        <div>
+                            <label for="issue-type" class="block text-sm font-medium text-gray-700">Issue Type</label>
+                            <select id="issue-type" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                <option>Order Issue</option>
+                                <option>Product Issue</option>
+                                <option>Payment Issue</option>
+                                <option>Account Issue</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="issue-order-id" class="block text-sm font-medium text-gray-700">Order ID (if applicable)</label>
+                            <input type="text" id="issue-order-id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="issue-details" class="block text-sm font-medium text-gray-700">Please describe the issue</label>
+                            <textarea id="issue-details" rows="5" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-red-600 text-white py-2 px-4 rounded-md font-medium hover:bg-red-700">Submit Report</button>
+                    </form>
+                </div>
+
+                <!-- Section: FAQs -->
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Frequently Asked Questions (FAQs)</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">How do I track my order?</h3>
+                            <p class="text-gray-600">You can track your order from the "Your Orders" page. Click on the order you wish to track to see its current status.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">What is your return policy?</h3>
+                            <p class="text-gray-600">We offer a 30-day return policy on most items. Please check the product page for specific return information.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">How do I change my password?</h3>
+                            <p class="text-gray-600">You can change your password from your account settings page (not included in this demo).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-gray-800 text-white mt-12 py-10">
+        <div class="container mx-auto max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-8 px-4">
+            <div>
+                <h3 class="font-bold text-lg mb-3">Get to Know Us</h3>
+                <ul class="space-y-2 text-gray-300">
+                    <li><a href="#" class="hover:text-white" data-page="page-about">About Us</a></li>
+                    <li><a href="#" class="hover:text-white">Careers</a></li>
+                    <li><a href="#" class="hover:text-white">Press Releases</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-bold text-lg mb-3">Connect with Us</h3>
+                <ul class="space-y-2 text-gray-300">
+                    <li><a href="#" class="hover:text-white">Facebook</a></li>
+                    <li><a href="#" class="hover:text-white">Twitter</a></li>
+                    <li><a href="#" class="hover:text-white">Instagram</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-bold text-lg mb-3">Make Money with Us</h3>
+                <ul class="space-y-2 text-gray-300">
+                    <li><a href="#" class="hover:text-white">Sell on ShopSphere</a></li>
+                    <li><a href="#" class="hover:text-white">Affiliate Program</a></li>
+                    <li><a href="#" class="hover:text-white">Advertise Your Products</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-bold text-lg mb-3">Let Us Help You</h3>
+                <ul class="space-y-2 text-gray-300">
+                    <li><a href="#" class="hover:text-white" data-page="page-care">Customer Service</a></li>
+                    <li><a href="#" class="hover:text-white" data-page="page-orders">Your Orders</a></li>
+                    <li><a href="#" class="hover:text-white">Shipping Rates</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container mx-auto max-w-7xl text-center text-gray-400 border-t border-gray-700 pt-6 mt-8 px-4">
+            &copy; 2025 ShopSphere, Inc. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- =========== JAVASCRIPT =========== -->
+    <script>
+        // --- Star SVG ---
+        const starFilledSVG = `
+            <svg class="star-filled" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+            </svg>`;
+        const starEmptySVG = `
+            <svg class="star-empty" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+            </svg>`;
+
+        // --- Mock Data ---
+        const mockProducts = [
+            { id: 1, name: 'Wireless Noise-Cancelling Headphones', price: 299.99, oldPrice: 349.99, rating: 5, img: 'Headphones' },
+            { id: 2, name: '4K Smart TV 55-Inch', price: 479.00, oldPrice: 599.00, rating: 4, img: 'Smart+TV' },
+            { id: 3, name: 'Pro Smartwatch with GPS', price: 199.50, oldPrice: 249.99, rating: 5, img: 'Smartwatch' },
+            { id: 4, name: 'Robotic Vacuum Cleaner', price: 220.00, oldPrice: 280.00, rating: 4, img: 'Vacuum' },
+            { id: 5, name: 'Espresso Machine', price: 149.95, oldPrice: 199.99, rating: 5, img: 'Espresso+Machine' },
+            { id: 6, name: 'Air Fryer XL 5.8-Quart', price: 89.99, oldPrice: 119.99, rating: 4, img: 'Air+Fryer' },
+            { id: 7, name: 'Portable Bluetooth Speaker', price: 45.50, oldPrice: 59.00, rating: 5, img: 'Speaker' },
+            { id: 8, name: 'Men\'s Running Shoes', price: 65.00, oldPrice: 85.00, rating: 4, img: 'Running+Shoes' },
+            { id: 9, name: 'Yoga Mat (Extra Thick)', price: 29.99, oldPrice: 39.99, rating: 5, img: 'Yoga+Mat' },
+            { id: 10, name: 'Hard-Shell Carry-On Luggage', price: 75.00, oldPrice: 99.00, rating: 4, img: 'Luggage' },
+        ];
+        
+        const mockOrders = [
+            { id: '34A-982', date: 'October 28, 2025', status: 'Delivered', statusColor: 'green', items: [mockProducts[0], mockProducts[6]] },
+            { id: '34A-651', date: 'October 25, 2025', status: 'Shipped', statusColor: 'blue', items: [mockProducts[3]] },
+            { id: '33B-112', date: 'September 15, 2025', status: 'Delivered', statusColor: 'green', items: [mockProducts[8], mockProducts[7]] },
+        ];
+        
+        const mockWishlist = [mockProducts[2], mockProducts[4], mockProducts[9]];
+        
+        const mockReviews = [
+            { product: mockProducts[0], rating: 5, title: 'Best headphones I\'ve ever owned!', text: 'The noise cancelling is incredible. Battery life is also amazing. Highly recommend!' },
+            { product: mockProducts[7], rating: 4, title: 'Great shoes for the price.', text: 'Very comfortable for my daily runs. They fit true to size. Good value.' },
+        ];
+
+        // --- DOM Elements ---
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('[data-page]');
+        const productGrid = document.getElementById('product-grid');
+        const productGridPage = document.getElementById('product-grid-page');
+        const orderList = document.getElementById('order-list');
+        const wishlistList = document.getElementById('wishlist-list');
+        const reviewList = document.getElementById('review-list');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+
+        // --- Navigation ---
+        function showPage(pageId) {
+            pages.forEach(page => {
+                page.classList.toggle('active', page.id === pageId);
+            });
+            window.scrollTo(0, 0); // Scroll to top on page change
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = e.currentTarget.getAttribute('data-page');
+                showPage(pageId);
+            });
+        });
+
+        // --- Render Functions ---
+        
+        function renderStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += (i <= rating) ? starFilledSVG : starEmptySVG;
+            }
+            return `<div class="flex items-center">${stars}</div>`;
+        }
+        
+        function renderProductCard(product) {
+            return `
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden transform transition duration-300 hover:shadow-lg hover:-translate-y-1">
+                <img src="https://placehold.co/300x300/eee/333?text=${product.img.split(' ').join('+')}" alt="${product.name}" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="text-md font-semibold text-gray-800 truncate" title="${product.name}">${product.name}</h3>
+                    <div class="flex items-center my-1">
+                        ${renderStars(product.rating)}
+                        <span class="text-xs text-gray-500 ml-2">(${product.rating})</span>
+                    </div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-xl font-bold text-gray-900">$${product.price.toFixed(2)}</span>
+                        <span class="text-sm text-gray-500 line-through">$${product.oldPrice.toFixed(2)}</span>
+                    </div>
+                    <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-md mt-3 text-sm font-medium hover:bg-blue-700 transition duration-200">Add to Cart</button>
+                </div>
+            </div>`;
+        }
+
+        function renderOrder(order) {
+            const itemHtml = order.items.map(item => `
+                <div class="flex items-center gap-4">
+                    <img src="https://placehold.co/100x100/eee/333?text=${item.img.split(' ').join('+')}" alt="${item.name}" class="w-16 h-16 object-cover rounded-md">
+                    <div>
+                        <h4 class="font-medium text-gray-800">${item.name}</h4>
+                        <p class="text-sm text-gray-600">$${item.price.toFixed(2)}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            return `
+            <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                <div class="flex flex-wrap justify-between items-start mb-4">
+                    <div>
+                        <p class="text-sm text-gray-500">Order ID: <span class="font-medium text-gray-700">${order.id}</span></p>
+                        <p class="text-sm text-gray-500">Placed on: <span class="font-medium text-gray-700">${order.date}</span></p>
+                    </div>
+                    <div class_name="text-right">
+                        <p class="font-semibold text-lg" style="color: ${order.statusColor};">${order.status}</p>
+                        <button class="text-sm text-blue-600 hover:underline">Track Package</button>
+                    </div>
+                </div>
+                <div class="space-y-4">${itemHtml}</div>
+                <div class="mt-4 pt-4 border-t border-gray-200 flex gap-4">
+                    <button class="bg-gray-100 text-gray-800 py-2 px-4 rounded-md text-sm font-medium hover:bg-gray-200">View Details</button>
+                    <button class="bg-gray-100 text-gray-800 py-2 px-4 rounded-md text-sm font-medium hover:bg-gray-200">Request Return</button>
+                </div>
+            </div>`;
+        }
+        
+        function renderWishlistItem(product) {
+            return `
+            <div class="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-wrap sm:flex-nowrap items-center gap-4">
+                <img src="https://placehold.co/150x150/eee/333?text=${product.img.split(' ').join('+')}" alt="${product.name}" class="w-full sm:w-32 h-32 object-cover rounded-md">
+                <div class="flex-grow">
+                    <h3 class="text-lg font-semibold text-gray-800">${product.name}</h3>
+                    ${renderStars(product.rating)}
+                    <p class="text-xl font-bold text-gray-900 mt-2">$${product.price.toFixed(2)}</p>
+                </div>
+                <div class="flex flex-col sm:items-end w-full sm:w-auto">
+                    <button class="w-full sm:w-auto bg-blue-600 text-white py-2 px-6 rounded-md text-sm font-medium hover:bg-blue-700 mb-2">Add to Cart</button>
+                    <button class="w-full sm:w-auto bg-gray-100 text-gray-800 py-2 px-6 rounded-md text-sm font-medium hover:bg-gray-200">Remove</button>
+                </div>
+            </div>`;
+        }
+        
+        function renderReview(review) {
+            return `
+            <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                <div class="flex items-start gap-4">
+                    <img src="https://placehold.co/100x100/eee/333?text=${review.product.img.split(' ').join('+')}" alt="${review.product.name}" class="w-20 h-20 object-cover rounded-md">
+                    <div>
+                        <p class="font-medium text-gray-700">Review for: <span class="font-semibold text-gray-900">${review.product.name}</span></p>
+                        ${renderStars(review.rating)}
+                        <h3 class="text-lg font-semibold text-gray-800 mt-2">${review.title}</h3>
+                        <p class="text-gray-600 mt-1">${review.text}</p>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // --- Form Validation ---
+        
+        function showError(id, message) {
+            const el = document.getElementById(id);
+            el.textContent = message;
+            el.classList.add('show');
+        }
+        
+        function hideError(id) {
+            document.getElementById(id).classList.remove('show');
+        }
+
+        function setupLoginForm() {
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                let isValid = true;
+                
+                // Reset errors
+                hideError('login-email-error');
+                hideError('login-password-error');
+                document.getElementById('login-success').style.display = 'none';
+
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+
+                if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    showError('login-email-error', 'Please enter a valid email.');
+                    isValid = false;
+                }
+                if (!password) {
+                    showError('login-password-error', 'Password is required.');
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    const successMsg = document.getElementById('login-success');
+                    successMsg.style.display = 'block';
+                    setTimeout(() => {
+                        successMsg.style.display = 'none';
+                        showPage('page-home'); // Redirect to home
+                    }, 2000);
+                }
+            });
+        }
+        
+        function setupRegisterForm() {
+            registerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                let isValid = true;
+
+                // Reset errors
+                hideError('reg-name-error');
+                hideError('reg-email-error');
+                hideError('reg-password-error');
+                hideError('reg-confirm-password-error');
+                document.getElementById('register-success').style.display = 'none';
+
+                const name = document.getElementById('reg-name').value;
+                const email = document.getElementById('reg-email').value;
+                const password = document.getElementById('reg-password').value;
+                const confirmPassword = document.getElementById('reg-confirm-password').value;
+                
+                if (!name) {
+                    showError('reg-name-error', 'Full name is required.');
+                    isValid = false;
+                }
+                if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    showError('reg-email-error', 'Please enter a valid email.');
+                    isValid = false;
+                }
+                if (password.length < 8) {
+                    showError('reg-password-error', 'Password must be at least 8 characters long.');
+                    isValid = false;
+                }
+                if (password !== confirmPassword) {
+                    showError('reg-confirm-password-error', 'Passwords do not match.');
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    const successMsg = document.getElementById('register-success');
+                    successMsg.style.display = 'block';
+                    setTimeout(() => {
+                        successMsg.style.display = 'none';
+                        showPage('page-login'); // Redirect to login
+                    }, 2000);
+                }
+            });
+        }
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Render all dynamic content
+            productGrid.innerHTML = mockProducts.map(renderProductCard).join('');
+            productGridPage.innerHTML = mockProducts.map(renderProductCard).join(''); // Also populate products page
+            orderList.innerHTML = mockOrders.map(renderOrder).join('');
+            wishlistList.innerHTML = mockWishlist.map(renderWishlistItem).join('');
+            reviewList.innerHTML = mockReviews.map(renderReview).join('');
+            
+            // Setup form validation
+            setupLoginForm();
+            setupRegisterForm();
+            
+            // Show the home page by default
+            showPage('page-home');
+        });
+
+    </script>
+</body>
+</html>
